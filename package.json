@@ -1,0 +1,35 @@
+{
+  "name": "kelp-server",
+  "version": "0.0.1",
+  "description": "kelp server",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "kelp": "^2.0.2",
+    "kelp-body": "^1.4.3",
+    "kelp-controller": "^0.0.0",
+    "kelp-error": "^0.0.5",
+    "kelp-logger": "^1.1.0",
+    "kelp-router": "^0.0.3",
+    "kelp-send": "^1.0.6",
+    "routing2": "^0.0.15"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/song940/kelp-server.git"
+  },
+  "keywords": [
+    "kelp"
+  ],
+  "author": "Lsong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/song940/kelp-server/issues"
+  },
+  "homepage": "https://github.com/song940/kelp-server#readme"
+}
