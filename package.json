@@ -1,6 +1,6 @@
 {
   "name": "kelp-server",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "kelp server",
   "main": "index.js",
   "directories": {
@@ -10,14 +10,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "kelp": "^2.0.2",
-    "kelp-body": "^1.4.3",
-    "kelp-controller": "^0.0.0",
-    "kelp-error": "^0.0.5",
-    "kelp-logger": "^1.1.0",
-    "kelp-router": "^0.0.3",
-    "kelp-send": "^1.0.6",
-    "routing2": "^0.0.15"
+    "kelp": "*",
+    "kelp-body": "*",
+    "kelp-controller": "*",
+    "kelp-error": "*",
+    "kelp-logger": "*",
+    "kelp-router": "*",
+    "kelp-send": "*",
+    "routing2": "*"
   },
   "repository": {
     "type": "git",

@@ -4,47 +4,65 @@ const body = require('kelp-body');
 const send = require('kelp-send');
 const error = require('kelp-error');
 const logger = require('kelp-logger');
+const Router = require('kelp-router');
+const controller = require('kelp-controller');
 const routing = require('routing2');
+const { debuglog } = require('util');
+
+const debug = debuglog('kelp-server');
+const { Response, Controller } = controller;
 
 const createServer = ({
+  app = kelp(),
+  port = 3000,
   routes = [],
+  plugins = [],
   middlewares = [],
   controllers = [],
   defaultHandler = true,
   defaultErrorHandler = true,
 }) => {
-  const app = kelp();
+  // router
+  const router = new Router();
+  const rules = routes.map(routing.create);
+  const ctrls = controllers.reduce((obj, Ctrl) => {
+    obj[Ctrl.name] = new Ctrl(app);
+    debug('initialized controller:', Ctrl.name);
+    return obj;
+  }, {});
+  for (const rule of rules) {
+    const { method, path, controller: c, action: a } = rule;
+    const ctrl = ctrls[c];
+    if (!ctrl) throw new Error(`[kelp-server] Can not find controller: "${c}"`);
+    const action = ctrl[a];
+    if (!action) throw new Error(`[kelp-server] Can not find action: "${a}"`);
+    debug('mapping controller to rule:', c, a);
+    router.route(method, path, controller(action));
+  }
+  // middleware
   app.use(send);
   app.use(body);
   app.use(logger);
-  app.use(middlewares);
+  app.use(
+    middlewares,
+    plugins
+      .map(plugin => plugin(app))
+      .filter(p => typeof p === 'function')
+  );
   if (defaultErrorHandler) {
     app.use(error);
   }
-  const ctrls = {};
-  for (const Controller of controllers) {
-    const ctrl = new Controller();
-    ctrls[ctrl.name] = ctrl;
-  }
-  const rules = routes.map(routing.create);
-  app.use((req, res, next) => {
-    const { status, route } = routing.find(rules, req);
-    if (!route) return next();
-    const { controller: c, action: a, params } = route;
-    if (ctrls[c] && a in ctrls[c]) {
-      req.params = params;
-      const response = ctrls[c][a](req);
-      res.status(status).send(response);
-      return;
-    }
-    return next();
-  });
+  app.use(router);
   if (defaultHandler) {
     app.use((_, res) => res.send(404));
   }
-  return http.createServer(app);
+  const server = http.createServer(app);
+  server.start = (p = port) => server.listen(p);
+  return server;
 };
 
 module.exports = {
+  Response,
+  Controller,
   createServer,
 };

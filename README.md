@@ -1,12 +1,11 @@
 ## kelp-server
 
-> kelp server
+> Super tiny web-server framework in Node.js
 
 ```js
 const { createServer } = require('kelp-server');
 
 class Home {
-  name = "home"
   index() {
     return "hello world";
   }
@@ -14,7 +13,7 @@ class Home {
 
 const server = createServer({
   routes: [
-    `get / => home#index`
+    `get / => Home#index`
   ],
   middlewares: [],
   controllers: [Home],
