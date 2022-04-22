@@ -21,6 +21,7 @@ const createServer = ({
   controllers = [],
   defaultHandler = true,
   defaultErrorHandler = true,
+  invoke = controller,
 }) => {
   // router
   const router = new Router();
@@ -37,7 +38,7 @@ const createServer = ({
     const action = ctrl[a];
     if (!action) throw new Error(`[kelp-server] Can not find action: "${a}"`);
     debug('mapping controller to rule:', c, a);
-    router.route(method, path, controller(action));
+    router.route(method, path, invoke(action));
   }
   // middleware
   app.use(send);
