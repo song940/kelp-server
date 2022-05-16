@@ -1,6 +1,6 @@
 {
   "name": "kelp-server",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "kelp server",
   "main": "index.js",
   "directories": {
@@ -12,7 +12,6 @@
   "dependencies": {
     "kelp": "*",
     "kelp-body": "*",
-    "kelp-controller": "*",
     "kelp-error": "*",
     "kelp-logger": "*",
     "kelp-router": "*",

@@ -5,12 +5,10 @@ const send = require('kelp-send');
 const error = require('kelp-error');
 const logger = require('kelp-logger');
 const Router = require('kelp-router');
-const controller = require('kelp-controller');
 const routing = require('routing2');
 const { debuglog } = require('util');
 
 const debug = debuglog('kelp-server');
-const { Response, Controller } = controller;
 
 const createServer = ({
   app = kelp(),
@@ -21,7 +19,6 @@ const createServer = ({
   controllers = [],
   defaultHandler = true,
   defaultErrorHandler = true,
-  invoke = controller,
 }) => {
   // router
   const router = new Router();
@@ -38,7 +35,7 @@ const createServer = ({
     const action = ctrl[a];
     if (!action) throw new Error(`[kelp-server] Can not find action: "${a}"`);
     debug('mapping controller to rule:', c, a);
-    router.route(method, path, invoke(action));
+    router.route(method, path, action);
   }
   // middleware
   app.use(send);
@@ -63,7 +60,5 @@ const createServer = ({
 };
 
 module.exports = {
-  Response,
-  Controller,
   createServer,
 };
